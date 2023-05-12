@@ -1,0 +1,45 @@
+/* fallback */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/materialicons/v117/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+  
+  .MuiTableCell-root{
+    padding: 10px !important;
+  }
+  
+  /* .MuiButtonBase-root{
+    padding: 0 !important;
+  } */
+  
+  .MuiTablePagination-toolbar{
+    min-height: 35px !important;
+    padding-right: 5px !important;
+    background: var(--table-header-color);
+  }
+  
+  .MuiTableCell-footer{
+    padding: 0 !important;
+  }
+
+  .MuiTableCell-root{
+    border-right: 1px solid lightgrey !important;
+  }

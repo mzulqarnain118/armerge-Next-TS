@@ -1,0 +1,20 @@
+.toolbar{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.col_11{
+    flex: 0 0 95%;
+    max-width: 95%;
+}
+
+.col_1{
+    flex: 0 0 5%;
+    max-width: 5%;
+}
+
+
+.headers{
+    overflow: hidden;
+}

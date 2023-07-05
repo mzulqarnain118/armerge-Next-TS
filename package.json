@@ -61,6 +61,7 @@
     "apexcharts-clevision": "3.28.5",
     "axios": "^1.4.0",
     "clsx": "^1.1.1",
+    "dotenv": "^16.3.1",
     "formik": "^2.2.9",
     "material-table": "^1.69.3",
     "mdi-material-ui": "^7.1.0",

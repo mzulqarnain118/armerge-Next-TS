@@ -90,6 +90,8 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 
 
 const RegisterPage = () => {
+  console.log(process.env.LIVE , "process.env.LIVE")
+
   // ** States
   // const [showPassword, setShowPassword] = useState<Boolean>(false)
   // const [showConfirmPassword, setShowConfirmPassword] = useState<Boolean>(false)

@@ -66,16 +66,15 @@ const getError = (error: AxiosError) => {
 
 const csrf_token = 'jaf?lsajf#alskjf%aljdkf?klasf';
 // const baseUrl = 'http://localhost:4000/api/v1/public/'
-const baseUrl = 'http://54.254.210.6/api/v1/public'
+const baseUrl = 'http://54.254.210.6/api/v1/public/'
 const token=""
-
 const headers ={
   'Content-Type': 'application/json',
 }
 
 const fileHeaders = { 'csrf_token': csrf_token };
 const options:any = { headers };
-
+console.log(process.env.LIVE , "process.env.LIVE")
 const getResponse = (response:any, redirect:boolean) => {
 
   if (response.status === 202 && redirect === true) {

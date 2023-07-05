@@ -1,5 +1,5 @@
 // ** React Imports
-import { ChangeEvent, useState } from 'react'
+import React,{ ChangeEvent, ReactNode, useState } from 'react'
 
 // ** Next Imports
 import Router from 'next/router';
@@ -17,7 +17,6 @@ import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormCo
 // ** Common Components Import
 import TextField from 'src/common/FormikTextField'
 import Toast from 'src/common/Toast/Toast';
-import { ForgotPasswordSchema } from 'src/helpers/validations/ForgotPasswordYupSchema'
 import { Formik, Form } from 'formik';
 import { ApiCallPost } from 'src/common/ApiCall';
 
@@ -64,10 +63,7 @@ const ForgotPassword = () => {
   // ** Hook
   const theme = useTheme()
 
-  const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
-
+  
   const initialValues: State = {
     email: '',
   };
@@ -95,7 +91,7 @@ const ForgotPassword = () => {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Typography variant='h4'>Forgot Password?</Typography>
           </Box>
-          <Box sx={{ mb: 6 }}>
+          <Box sx={{ mb: 6,textAlign:"center" }}>
             <Typography variant='body2' color='textSecondary'>
               {emailSentFlag?"Reset Password Link has been sent to your email address.":"Enter the email address associated with your account, and we'll send you a link to reset your password."}
             </Typography>
@@ -121,6 +117,7 @@ const ForgotPassword = () => {
           </Formik>}
         </CardContent>
       </Card>
+   
             <FooterIllustrationsV1 image1=" " image2=" " />
     </Box>
   )

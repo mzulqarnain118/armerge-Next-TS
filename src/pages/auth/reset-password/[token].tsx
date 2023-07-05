@@ -1,9 +1,9 @@
 // ** Re act Impo rts
-import { useState, Fragment, ChangeEvent, MouseEvent, ReactNode } from 'react'
+import { useState,useEffect, Fragment, ChangeEvent, MouseEvent, ReactNode } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
-import Router from 'next/router';
+import Router,{useRouter} from 'next/router';
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -11,20 +11,14 @@ import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
 import Checkbox from '@mui/material/Checkbox'
 import Typography from '@mui/material/Typography'
-import InputLabel from '@mui/material/InputLabel'
 import IconButton from '@mui/material/IconButton'
 import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
 import { styled, useTheme } from '@mui/material/styles'
 import MuiCard, { CardProps } from '@mui/material/Card'
 import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
 
 // ** Icons Imports
 import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
 
 // ** Configs
 import themeConfig from 'src/configs/themeConfig'
@@ -33,7 +27,7 @@ import themeConfig from 'src/configs/themeConfig'
 import TextField from 'src/common/FormikTextField'
 import PasswordField from 'src/common/PasswordField'
 import Toast from 'src/common/Toast/Toast';
-import { signUpSchema } from 'src/helpers/validations/signUpSchema'
+import { ResetSchema } from 'src/helpers/validations/resetYup'
 import { Formik, Form } from 'formik';
 import { ApiCallPost } from 'src/common/ApiCall';
 
@@ -46,10 +40,6 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 interface State {
   password: string
   confirmPassword: string
-  firstName: string
-  lastName: string
-  email: string
-
 }
 
 // ** Styled Components
@@ -86,25 +76,21 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 }))
 
 
-const RegisterPage = () => {
+const ResetPassword = () => {
   // ** States
   // const [showPassword, setShowPassword] = useState<Boolean>(false)
   // const [showConfirmPassword, setShowConfirmPassword] = useState<Boolean>(false)
 
   const initialValues: State = {
-    firstName: '',
-    lastName: '',
     password: '',
     confirmPassword: '',
-    email: '',
   };
 
   // ** Hook
   const theme = useTheme()
+ const router = useRouter();
+  const { token } =  router.query;
 
-  const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
 
   const onSubmit = async (values: State, { resetForm }) => {
     delete values.confirmPassword;
@@ -113,7 +99,7 @@ const RegisterPage = () => {
 
       if (result?.status === 201) {
         resetForm()
-        Toast("Registered Successfully", "success");
+        Toast("Password Changed Successfully", "success");
         Router.push('/auth/login');
       }
     } catch (error) {
@@ -122,7 +108,24 @@ const RegisterPage = () => {
       Toast(error.message, "error");
     }
   }
+ const validateToken = async (values: State) => {
+    try {
+      const result = await ApiCallPost(`user/reset-password/${token}`,{newPassword:values.password});
 
+      if (result?.status === 201) {
+        Toast("Password Changed Successfully", "success");
+        Router.push('/auth/login');
+      }
+    } catch (error) {
+      console.log(error, "error")
+      Toast(error.message, "error");
+    }
+  }
+  // useEffect(()=>{
+  //   token && validateToken()
+  // },[token])
+
+  
   return (
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>
@@ -132,42 +135,24 @@ const RegisterPage = () => {
           </Box>
           <Box sx={{ mb: 6, textAlign: 'center' }}>
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5, fontSize: '30px' }}>
-              Create Account
+              Reset Password
             </Typography>
           </Box>
           <Formik
             initialValues={initialValues}
-            onSubmit={onSubmit}
-            validationSchema={signUpSchema}>
+            onSubmit={validateToken}
+            validationSchema={ResetSchema}>
             {({ errors, touched, values, dirty, isValid, handleChange, handleBlur }) => (
-
-
               <Form className="row">
-                <TextField autoFocus fullWidth name='firstName' label='First Name' />
-                <TextField autoFocus fullWidth name='lastName' label='Last Name' />
-                <TextField fullWidth type='email' name='email' label='Email' />
-                <PasswordField fullWidth name='password' label='Password' />
-                <PasswordField fullWidth name='confirmPassword' label='Confirm Password' />
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label={
-                    <Fragment>
-                      <span>I agree to </span>
-                      <Link href='/' passHref>
-                        <LinkStyled onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
-                          all Terms & Conditions
-                        </LinkStyled>
-                      </Link>
-                    </Fragment>
-                  }
-                />
+                <PasswordField  name='password' label='Password' />
+                <PasswordField  name='confirmPassword' label='Confirm Password' />
                 <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
-                  Sign up
+                  Reset
                 </Button>
                 <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-                  <Typography variant='body2' sx={{ marginRight: 2 }}>
+                  {/* <Typography variant='body2' sx={{ marginRight: 2 }}>
                     Already have an account?
-                  </Typography>
+                  </Typography> */}
                   <Typography variant='body2'>
                     <Link passHref href='/auth/login'>
                       <LinkStyled>Sign in instead</LinkStyled>
@@ -176,23 +161,6 @@ const RegisterPage = () => {
                 </Box>
                 <Divider sx={{ my: 5 }}>or</Divider>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  {/* <Link href='/' passHref>
-                <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
-                  <Facebook sx={{ color: '#497ce2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
-                  <Twitter sx={{ color: '#1da1f2' }} />
-                </IconButton>
-              </Link>
-              <Link href='/' passHref>
-                <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
-                  <Github
-                    sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
-                  />
-                </IconButton>
-              </Link> */}
                   <Link href='/' passHref>
                     <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
                       <Google sx={{ color: '#db4437' }} />
@@ -210,6 +178,6 @@ const RegisterPage = () => {
   )
 }
 
-RegisterPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
+ResetPassword.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 
-export default RegisterPage
+export default ResetPassword

@@ -3,7 +3,7 @@ import { useField } from 'formik';
 import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextFieldProps } from '@mui/material';
 import { EyeOffOutline, EyeOutline } from 'mdi-material-ui';
 
-interface PasswordFieldProps extends TextFieldProps {
+interface PasswordFieldProps  {
   label: string;
   name: string;
 }

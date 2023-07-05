@@ -3,7 +3,7 @@ import { ChangeEvent, MouseEvent, ReactNode, useState, useEffect } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
-import Router from 'next/router';
+import Router,{useRouter}  from 'next/router';
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -46,7 +46,7 @@ interface State {
 }
 
 // ** Styled Components
-const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
+ const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
 }))
 
@@ -70,7 +70,15 @@ const LoginPage = () => {
     email: '',
   })
   const [rememberMe, setRememberMe] = useState<boolean>(false);
-
+  const router = useRouter();
+  const { storeID } =  router.query;
+  console.log(storeID)
+  useEffect(() => {
+    // Check if localStorage is available
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem('storeID', String(storeID));
+    }
+  }, [storeID]);
   // Set the rememberMe state to true if the rememberMe checkbox was previously checked
   useEffect(() => {
     const rememberMeValue = localStorage.getItem('rememberMe') === 'true'
@@ -80,10 +88,13 @@ const LoginPage = () => {
   const handleRememberMeChange = (e) => {
     setRememberMe(e.target.checked)
   }
+
+  const handleGoogleSignIn = () => {
+
+  }
   const initialValues: State = {
     password: '',
     email: '',
-    rememberMe: false
   };
 
   const onSubmit = async (values: State, { resetForm }) => {
@@ -97,7 +108,7 @@ const LoginPage = () => {
         // Set token and user data in localStorage
         localStorage.setItem('token', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
-        localStorage.setItem('loggedIn', true);
+        localStorage.setItem('loggedIn', String(true));
         localStorage.setItem('email', user?.email);
         localStorage.setItem('role', user?.role);
         localStorage.setItem('id', user?.id);
@@ -105,10 +116,11 @@ const LoginPage = () => {
         localStorage.setItem('user', JSON.stringify(user)); // store as a string
         localStorage.setItem('2FA_qrCode', result?.data?.qrCode);
         localStorage.setItem('is2FAEnabled', user?.is2FAEnabled);
+        localStorage.setItem('isEmailVerified', user?.isEmailVerified);
 
         // Check if "remember me" checkbox is checked
         if (rememberMe) {
-          localStorage.setItem('rememberMe', true);
+          localStorage.setItem('rememberMe', "true");
         }
         Toast("Logged In Successfully", "success");
         resetForm()
@@ -123,13 +135,7 @@ const LoginPage = () => {
   // ** Hook
   const theme = useTheme()
 
-  const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
-  }
+  
 
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -168,7 +174,7 @@ const LoginPage = () => {
             {({ errors, touched, values, dirty, isValid, handleChange, handleBlur }) => (
               <Form className="row">
                 <TextField fullWidth type='email' name='email' label='Email' />
-                <PasswordField fullWidth name='password' label='Password' />
+                <PasswordField  name='password' label='Password' />
                 <Box
                   sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
                 >
@@ -221,9 +227,14 @@ const LoginPage = () => {
                 </IconButton>
               </Link> */}
             <Link href='/' passHref>
-              <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
-                <Google sx={{ color: '#db4437' }} />
-              </IconButton>
+           
+                          <Button fullWidth size='large'  variant='contained' onClick={(e: MouseEvent<HTMLElement>) => handleGoogleSignIn()} sx={{height:"40px"}}>
+
+            <Img height='15' alt='error-illustration' src='/icons/googleIcon.svg' /> 
+             <Typography variant='h6' sx={{ fontWeight: 500, marginLeft: 1.5, fontSize: '15px' }}>
+               Sign up with Google
+            </Typography>
+                    </Button>
             </Link>
           </Box>
 

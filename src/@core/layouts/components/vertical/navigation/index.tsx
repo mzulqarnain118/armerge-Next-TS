@@ -39,7 +39,7 @@ interface Props {
 const StyledBoxForShadow = styled(Box)<BoxProps>({
   top: 50,
   left: -8,
-  zIndex: 2,
+  zIndex: 0,
   height: 75,
   display: 'none',
   position: 'absolute',

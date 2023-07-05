@@ -5,7 +5,7 @@ import './style.css'
 const Loading = () => {
     return (
         <div className='spinner-wrapper'>
-           <div class="sbl-circ-path"></div>
+           <div className="sbl-circ-path"></div>
         </div>
 
     );

@@ -3,7 +3,7 @@ import { useFormik, FormikProps } from 'formik';
 import { ObjectSchema } from 'yup';
 
 interface Props {
-  initialValues: Record<any>;
+  initialValues: Record<any, any>;
   onSubmit: (values: Record<string, unknown>) => void;
   validationSchema?: ObjectSchema<any>;
   children: (formik: FormikProps<any>) => ReactNode;

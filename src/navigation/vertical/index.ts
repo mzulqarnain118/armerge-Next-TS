@@ -6,10 +6,11 @@ import HomeOutline from 'mdi-material-ui/HomeOutline'
 import FormatLetterCase from 'mdi-material-ui/FormatLetterCase'
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
-import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
+// import {PeopleAltIcon,ProductionQuantityLimitsIcon} from '@mui/icons-material';
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
-// import  ProductionQuantityLimitsIcon  from 'mdi-material-ui/production_quantity_limits';
+import { ShoppingCartOutlined,Publish,ListAltOutlined } from '@mui/icons-material'
 
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
@@ -22,27 +23,25 @@ const navigation = (): VerticalNavItemsType => {
       path: '/'
     },
     {
-      title: 'User Management',
-      icon: AccountPlusOutline,
-      path: '/user-management'
+      title: 'Team Management',
+      icon: ManageAccountsIcon,
+      path: '/team-management'
     },
-    // {
-    //   title: 'Product Listing',
-    //   icon: ProductionQuantityLimitsIcon,
-    //   path: '/account-settings'
-    // },
-    // {
-    //   title: 'Login',
-    //   icon: Login,
-    //   path: '/auth/login',
-    //   // openInNewTab: true
-    // },
-    // {
-    //   title: 'Register',
-    //   icon: AccountPlusOutline,
-    //   path: '/auth/register',
-    //   // openInNewTab: true
-    // },
+    {
+      title: 'Product Listing',
+      icon: ListAltOutlined,
+      path: '/ProductListings'
+    },
+   {
+  title: 'My Orders',
+  icon: ShoppingCartOutlined,
+  path: '/orders',
+},
+ {
+  title: 'Ready to Publish',
+  icon: Publish,
+  path: '/publish',
+},
     // {
     //   title: 'Error',
     //   icon: AlertCircleOutline,

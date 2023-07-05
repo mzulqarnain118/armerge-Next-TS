@@ -5,6 +5,7 @@ import { useState } from 'react'
 import Fab from '@mui/material/Fab'
 import { styled } from '@mui/material/styles'
 import Box, { BoxProps } from '@mui/material/Box'
+import {Alert,Snackbar} from '@mui/material';
 
 // ** Icons Imports
 import ArrowUp from 'mdi-material-ui/ArrowUp'
@@ -63,16 +64,19 @@ const VerticalLayout = (props: LayoutProps) => {
   const toggleNavVisibility = () => setNavVisible(!navVisible)
 
   return (
-    <>
+    <>     
       <VerticalLayoutWrapper className='layout-wrapper'>
+
         {/* Navigation Menu */}
-        <Navigation
-          navWidth={navWidth}
-          navVisible={navVisible}
-          setNavVisible={setNavVisible}
-          toggleNavVisibility={toggleNavVisibility}
-          {...props}
-        />
+        <Box  >
+          <Navigation
+            navWidth={navWidth}
+            navVisible={navVisible}
+            setNavVisible=  {setNavVisible}
+            toggleNavVisibility={toggleNavVisibility}
+            {...props}
+          />
+        </Box>
         <MainContentWrapper className='layout-content-wrapper'>
           {/* AppBar Component */}
           <AppBar toggleNavVisibility={toggleNavVisibility} {...props} />

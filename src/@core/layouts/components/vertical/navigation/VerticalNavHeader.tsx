@@ -68,7 +68,7 @@ const VerticalNavHeader = (props: Props) => {
     }
   }))
   return (
-    <MenuHeaderWrapper className='nav-header' sx={{ pl: 6 }}>
+    <MenuHeaderWrapper className='nav-header' sx={{ pl: 6,marginTop:"30px"}}>
       {userVerticalNavMenuBranding ? (
         userVerticalNavMenuBranding(props)
       ) : (

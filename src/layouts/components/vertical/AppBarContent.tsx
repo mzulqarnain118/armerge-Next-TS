@@ -1,5 +1,5 @@
 // ** MUI Imports
-import Box from '@mui/material/Box'
+import {Box,Alert,Snackbar,Button, Typography} from '@mui/material'
 import { Theme } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import IconButton from '@mui/material/IconButton'
@@ -33,7 +33,9 @@ const AppBarContent = (props: Props) => {
   const hiddenSm = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'))
 
   return (
+
     <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+   
       <Box className='actions-left' sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
         {hidden ? (
           <IconButton
@@ -56,8 +58,8 @@ const AppBarContent = (props: Props) => {
           }}
         /> */}
       </Box>
-      {/* <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
-        {hiddenSm ? null : (
+      <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
+        {/* {hiddenSm ? null : (
           <Box
             component='a'
             target='_blank'
@@ -71,11 +73,11 @@ const AppBarContent = (props: Props) => {
               src='https://img.shields.io/github/stars/themeselection/materio-mui-react-nextjs-admin-template-free?style=social'
             />
           </Box>
-        )}
-        <ModeToggler settings={settings} saveSettings={saveSettings} />
-        <NotificationDropdown />
+        )} */}
+        {/* <ModeToggler settings={settings} saveSettings={saveSettings} />
+         <NotificationDropdown /> */}
         <UserDropdown />
-      </Box> */}
+      </Box>
     </Box>
   )
 }

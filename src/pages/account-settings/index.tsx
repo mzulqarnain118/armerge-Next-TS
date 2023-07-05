@@ -41,7 +41,23 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const AccountSettings = () => {
+interface AccountSettingsProps {
+  data?: any; // Type for the "data" prop (optional)
+  setTableUpdate: React.Dispatch<React.SetStateAction<any>>;
+  setopenPopup: React.Dispatch<React.SetStateAction<boolean>>;
+  label: string;
+  submitAction: string;
+  setUpdation?: React.Dispatch<React.SetStateAction<boolean>>; // Type for the "setUpdation" prop (optional)
+}
+
+const AccountSettings: React.FC<AccountSettingsProps> = ({
+  data,
+  setTableUpdate,
+  setopenPopup,
+  label,
+  submitAction,
+  setUpdation,
+}) => {
   // ** State
   const [value, setValue] = useState<string>('account')
 

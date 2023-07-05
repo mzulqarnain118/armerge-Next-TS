@@ -42,7 +42,6 @@ const columns: GridColDef[] = [
       {
         field: 'image',
         headerName: 'Image',
-        imageUrl: '../', // URL of the image
         width: 150,
         editable: true,
       },

@@ -3,7 +3,6 @@ import Head from 'next/head'
 import { Router } from 'next/router'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
-import 'dotenv/config'
 // ** Loader Import
 import NProgress from 'nprogress'
 

@@ -36,9 +36,11 @@ const getError = (error: AxiosError) => {
     if (status === 401) {
       Toast(message, 'error');
       if (localStorage.getItem('loggedIn')) {
+        Toast("Session has expired!", "error");
         localStorage.removeItem('loggedIn');
         localStorage.removeItem('token');
-        window.location.assign('/login');
+        localStorage.removeItem('refreshToken');
+        window.location.assign('/auth/login');
       }
     } else if (status === 403) {
       Toast('This Role is restricted to access this request.', 'error');

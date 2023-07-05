@@ -22,6 +22,7 @@ import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsCo
 
 // ** Common Components Import
 import ContainerToast from 'src/common/Toast/ContainerToast';
+import Toast from 'src/common/Toast/Toast';
 
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
@@ -31,6 +32,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
 import '../../styles/globals.css'
+import { useEffect } from 'react'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -55,6 +57,15 @@ if (themeConfig.routingLoader) {
 
 // ** Configure JSS & ClassName
 const App = (props: ExtendedAppProps) => {
+
+  useEffect(() => {
+    if (localStorage.getItem('loggedIn')) {
+      localStorage.removeItem('loggedIn');
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
+      window.location.assign('/auth/login');
+    }
+  }, [])
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   // Variables

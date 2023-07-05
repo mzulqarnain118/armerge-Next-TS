@@ -45,6 +45,9 @@ const UserDropdown = () => {
 
   const handleDropdownClose = (url?: string) => {
     if (url) {
+      localStorage.removeItem('isLoggedin')
+      localStorage.removeItem('token')
+      localStorage.removeItem('refreshToken')
       router.push(url)
     }
     setAnchorEl(null)
@@ -144,7 +147,7 @@ const UserDropdown = () => {
           </Box>
         </MenuItem>
         <Divider />
-        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
+        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/auth/login')}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
           Logout
         </MenuItem>

@@ -35,9 +35,9 @@ const getError = (error: AxiosError) => {
 
     if (status === 401) {
       Toast(message, 'error');
-      if (localStorage.getItem('loggedIn')) {
+      if (localStorage.getItem('loggedIn')==="true") {
         Toast("Session has expired!", "error");
-        localStorage.removeItem('loggedIn');
+        localStorage.setItem('loggedIn',"false");
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
         window.location.assign('/auth/login');
@@ -67,8 +67,8 @@ const getError = (error: AxiosError) => {
 };
 
 const csrf_token = 'jaf?lsajf#alskjf%aljdkf?klasf';
-// const baseUrl = 'http://localhost:4000/api/v1/public/'
-const baseUrl = 'http://54.254.210.6/api/v1/public/'
+const baseUrl = 'http://localhost:4000/api/v1/public/'
+// const baseUrl = 'http://54.254.210.6/api/v1/public/'
 const token=""
 const headers ={
   'Content-Type': 'application/json',

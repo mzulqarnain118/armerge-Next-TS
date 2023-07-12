@@ -59,8 +59,8 @@ if (themeConfig.routingLoader) {
 const App = (props: ExtendedAppProps) => {
 
   useEffect(() => {
-    if (localStorage.getItem('loggedIn')) {
-      localStorage.removeItem('loggedIn');
+    if (localStorage.getItem('loggedIn')==="true") {
+      localStorage.setItem('loggedIn',"false");
       localStorage.removeItem('token');
       localStorage.removeItem('refreshToken');
       window.location.assign('/auth/login');

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { ReactNode } from 'react'
-import {Box,Alert,Snackbar,Button, Typography} from '@mui/material'
+import Router, { useRouter } from 'next/router'
+import { Box, Alert, Snackbar, Button, Typography } from '@mui/material'
 import { Theme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import VerticalLayout from 'src/@core/layouts/VerticalLayout'
@@ -8,7 +9,11 @@ import VerticalNavItems from 'src/navigation/vertical'
 import UpgradeToProButton from './components/UpgradeToProButton'
 import VerticalAppBarContent from './components/vertical/AppBarContent'
 import { useSettings } from 'src/@core/hooks/useSettings'
-import zIndex from '@mui/material/styles/zIndex'
+
+// ** Common Components Import
+import Toast from 'src/common/Toast/Toast'
+import { ApiCallPost } from 'src/common/ApiCall'
+import { getLocal, setLocal } from 'src/helpers'
 
 interface Props {
   children: ReactNode
@@ -18,11 +23,35 @@ const UserLayout = ({ children }: Props) => {
   const { settings, saveSettings } = useSettings()
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
   const [navOpen, setNavOpen] = useState(false)
+  const [emailVerified, setEmailVerified] = useState<Boolean>(false)
 
   const toggleNavVisibility = () => {
     setNavOpen(!navOpen)
   }
+  const sendVerificationEmail = async () => {
+    try {
+      const result = await ApiCallPost(`user/verify-email`, { email: localStorage.getItem('email') })
 
+      if (result?.status === 201) {
+        setEmailVerified(true)
+        Toast('Email Sent to your registered email', 'success')
+      }
+    } catch (error) {
+      console.log(error, 'error')
+      Toast(error.message, 'error')
+    }
+  }
+  const hideSuccessBar = async () => {
+    try {
+      const result = await ApiCallPost(`user/hideSuccessBar`, { email: localStorage.getItem('email') })
+      if (result?.status === 201) {
+        localStorage.setItem('hideSuccessBar',"true")
+      }
+    } catch (error) {
+      console.log(error, 'error')
+      Toast(error.message, 'error')
+    }
+  }
   const UpgradeToProImg = () => {
     return (
       <Box sx={{ mx: 'auto' }}>
@@ -36,43 +65,52 @@ const UserLayout = ({ children }: Props) => {
       </Box>
     )
   }
-
   return (
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-      <Box sx={{  }}>
- {typeof window !== 'undefined' && window.localStorage && !localStorage.getItem("isEmailVerified")?
-        <Alert sx={{borderRadius:0,zIndex: 9999, position: 'sticky'}} onClose={() => alert(1)} severity='error' variant='filled'>
-          We need to verify your email address by clicking the link we sent.{' '}
-          <span
-            onClick={() => alert(2)}
-            style={{
-              fontWeight: 'bold', // Make the text bold
-              color: 'white', // Set the text color to white
-              cursor: 'pointer' // Make the text cursor pointer
-            }}
-          >
-            Send It Again
-          </span>
-        </Alert>
-       :<Alert sx={{borderRadius:0,zIndex: 'tooltip', position: 'sticky'}} onClose={() => alert(1)}  variant='filled' severity="success">Your email address has been successfully verified.</Alert>}
-</Box>
-      <VerticalLayout
-        hidden={!navOpen && hidden}
-        settings={settings}
-        saveSettings={saveSettings}
-        verticalNavItems={VerticalNavItems()}
-        verticalAppBarContent={props => (
-          <VerticalAppBarContent
-            hidden={hidden}
-            settings={settings}
-            saveSettings={saveSettings}
-            toggleNavVisibility={toggleNavVisibility}
-          ></VerticalAppBarContent>
-        )}
-      >
-        {children}
-        {/* <UpgradeToProButton /> */}
-      </VerticalLayout>
+        {typeof window !== 'undefined' && window.localStorage && localStorage.getItem('isEmailVerified') === 'false' ? (
+          <Alert sx={{ borderRadius: 0, zIndex: 9999, position: 'sticky' }} severity='error' variant='filled'>
+            We need to verify your email address by clicking the link we sent.{' '}
+            <span
+              onClick={() => sendVerificationEmail()}
+              style={{
+                fontWeight: 'bold', // Make the text bold
+                color: 'white', // Set the text color to white
+                cursor: 'pointer' // Make the text cursor pointer
+              }}
+            >
+              Send It Again
+            </span>
+          </Alert>
+        ) : <>
+
+       
+         {!getLocal('hideSuccessBar') &&  <Alert
+                     sx={{ borderRadius: 0, zIndex: 'tooltip', position: 'sticky' }}
+                     onClose={() => hideSuccessBar()}
+                     variant='filled'
+                     severity='success'
+                   >
+                     Your email address has been successfully verified.
+                   </Alert>}
+           <VerticalLayout
+           hidden={!navOpen && hidden}
+           settings={settings}
+           saveSettings={saveSettings}
+           verticalNavItems={VerticalNavItems()}
+           verticalAppBarContent={props => (
+             <VerticalAppBarContent
+               hidden={hidden}
+               settings={settings}
+               saveSettings={saveSettings}
+               toggleNavVisibility={toggleNavVisibility}
+             ></VerticalAppBarContent>
+           )}
+         >
+           {children}
+           {/* <UpgradeToProButton /> */}
+         </VerticalLayout>
+         </>}
+     
     </Box>
   )
 }

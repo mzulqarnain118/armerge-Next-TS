@@ -3,7 +3,7 @@ import { ChangeEvent, MouseEvent, ReactNode, useState, useEffect } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
-import Router,{useRouter}  from 'next/router';
+import Router, { useRouter } from 'next/router'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -32,13 +32,14 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Common Components Import
 import TextField from 'src/common/FormikTextField'
 import PasswordField from 'src/common/PasswordField'
-import Toast from 'src/common/Toast/Toast';
+import Toast from 'src/common/Toast/Toast'
 import { LoginSchema } from 'src/helpers/validations/LoginSchema'
-import { Formik, Form } from 'formik';
-import { ApiCallPost } from 'src/common/ApiCall';
+import { Formik, Form } from 'formik'
+import { ApiCallPost, ApiCallGetSimple } from 'src/common/ApiCall'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import { LeftContent, ResponsiveCardContent } from '../register/[[...storeID]]'
 
 interface State {
   password: string
@@ -46,7 +47,7 @@ interface State {
 }
 
 // ** Styled Components
- const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
+const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
 }))
 
@@ -67,75 +68,88 @@ const LoginPage = () => {
   // ** State
   const [values, setValues] = useState<State>({
     password: '',
-    email: '',
+    email: ''
   })
-  const [rememberMe, setRememberMe] = useState<boolean>(false);
-  const router = useRouter();
-  const { storeID } =  router.query;
+  const [rememberMe, setRememberMe] = useState<boolean>(false)
+  const router = useRouter()
+  const { storeID } = router.query
   console.log(storeID)
   useEffect(() => {
     // Check if localStorage is available
     if (typeof window !== 'undefined' && window.localStorage) {
-      localStorage.setItem('storeID', String(storeID));
+      localStorage.setItem('storeID', String(storeID))
     }
-  }, [storeID]);
+  }, [storeID])
   // Set the rememberMe state to true if the rememberMe checkbox was previously checked
   useEffect(() => {
     const rememberMeValue = localStorage.getItem('rememberMe') === 'true'
     setRememberMe(rememberMeValue)
   }, [])
 
-  const handleRememberMeChange = (e) => {
+  const handleRememberMeChange = e => {
     setRememberMe(e.target.checked)
   }
 
-  const handleGoogleSignIn = () => {
-
+  const handleGoogleSignIn = async() => {
+    try {
+    const response = await ApiCallGetSimple('user/login/google')
+    if (response) {
+      console.log(response)
+      // Success: Handle the successful response
+      // const data = await apiResponse.json();
+      // ...
+    } else {
+      // Error: Handle the error response
+      // const error = await apiResponse.json();
+      // ...
+    }
+  } catch (error) {
+    // Error: Handle any exceptions that occur during the sign-in process
+    console.error('Google Sign-In Error:', error)
+  }
+  debugger
   }
   const initialValues: State = {
     password: '',
-    email: '',
-  };
+    email: ''
+  }
 
   const onSubmit = async (values: State, { resetForm }) => {
     try {
-      const result = await ApiCallPost('user/login', values);
+      const result = await ApiCallPost('user/login', values)
       if (result?.status === 200) {
-        const accessToken = result?.data?.data?.accessToken;
-        const refreshToken = result?.data?.data?.refreshToken;
-        const user = result?.data?.user;
-
+        const accessToken = result?.data?.data?.accessToken
+        const refreshToken = result?.data?.data?.refreshToken
+        const user = result?.data?.data.user
+        
         // Set token and user data in localStorage
-        localStorage.setItem('token', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        localStorage.setItem('loggedIn', String(true));
-        localStorage.setItem('email', user?.email);
-        localStorage.setItem('role', user?.role);
-        localStorage.setItem('id', user?.id);
-        localStorage.setItem('name', user?.firstName);
-        localStorage.setItem('user', JSON.stringify(user)); // store as a string
-        localStorage.setItem('2FA_qrCode', result?.data?.qrCode);
-        localStorage.setItem('is2FAEnabled', user?.is2FAEnabled);
-        localStorage.setItem('isEmailVerified', user?.isEmailVerified);
+        localStorage.setItem('token', accessToken)
+        localStorage.setItem('refreshToken', refreshToken)
+        localStorage.setItem('loggedIn', String(true))
+        localStorage.setItem('email', user?.email)
+        localStorage.setItem('role', user?.role)
+        localStorage.setItem('id', user?._id)
+        localStorage.setItem('hideSuccessBar', user?.hideSuccessBar)
+        localStorage.setItem('name', user?.firstName + ' ' + user?.lastName)
+        localStorage.setItem('user', JSON.stringify(user)) // store as a string
+        localStorage.setItem('isEmailVerified', user?.isEmailVerified)
 
         // Check if "remember me" checkbox is checked
         if (rememberMe) {
-          localStorage.setItem('rememberMe', "true");
+          localStorage.setItem('rememberMe', 'true')
         }
-        Toast("Logged In Successfully", "success");
+        Toast('Logged In Successfully', 'success')
         resetForm()
-        Router.push('/');
+        Router.push('/')
       }
     } catch (error) {
-      console.log(error, "error");
-      Toast(error.message, "error");
+      console.log(error, 'error')
+      Toast(error.message, 'error')
     }
   }
 
   // ** Hook
   const theme = useTheme()
-
-  
 
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -155,9 +169,10 @@ const LoginPage = () => {
   }))
 
   return (
-    <Box className='content-center'>
-      <Card sx={{ zIndex: 1 }}>
-        <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
+    <Box style={{ display: 'flex', height: '100vh' }}>
+      <LeftContent height='100%' alt='error-illustration' src='/images/pages/AuthLeftContent.png' style={{ flex: 1 }} />
+      <Card sx={{ zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <ResponsiveCardContent>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Img height='37' alt='error-illustration' src='/images/armergeLogo.svg' />
           </Box>
@@ -167,34 +182,32 @@ const LoginPage = () => {
             </Typography>
           </Box>
 
-          <Formik
-            initialValues={initialValues}
-            onSubmit={onSubmit}
-            validationSchema={LoginSchema}>
+          <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={LoginSchema}>
             {({ errors, touched, values, dirty, isValid, handleChange, handleBlur }) => (
-              <Form className="row">
+              <Form className='row'>
                 <TextField fullWidth type='email' name='email' label='Email' />
-                <PasswordField  name='password' label='Password' />
+                <PasswordField name='password' label='Password' />
                 <Box
-                  sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
+                  sx={{
+                    mb: 4,
+                    display: 'flex',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between'
+                  }}
                 >
-                  <FormControlLabel control={<Checkbox checked={rememberMe}
-                    onChange={handleRememberMeChange} />} label='Remember Me' />
+                  <FormControlLabel
+                    control={<Checkbox checked={rememberMe} onChange={handleRememberMeChange} />}
+                    label='Remember Me'
+                  />
                   <Link passHref href='/auth/forgot-password'>
-                    <LinkStyled >Forgot Password?</LinkStyled>
+                    <LinkStyled>Forgot Password?</LinkStyled>
                   </Link>
                 </Box>
-                <Button
-                  fullWidth
-                  size='large'
-                  variant='contained'
-                  sx={{ marginBottom: 7 }}
-                  type='submit'
-                >
+                <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 7 }} type='submit'>
                   Login
                 </Button>
               </Form>
-
             )}
           </Formik>
           <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -227,20 +240,23 @@ const LoginPage = () => {
                 </IconButton>
               </Link> */}
             <Link href='/' passHref>
-           
-                          <Button fullWidth size='large'  variant='contained' onClick={(e: MouseEvent<HTMLElement>) => handleGoogleSignIn()} sx={{height:"40px"}}>
-
-            <Img height='15' alt='error-illustration' src='/icons/googleIcon.svg' /> 
-             <Typography variant='h6' sx={{ fontWeight: 500, marginLeft: 1.5, fontSize: '15px' }}>
-               Sign up with Google
-            </Typography>
-                    </Button>
+              <Button
+                fullWidth
+                size='large'
+                variant='contained'
+                onClick={(e: MouseEvent<HTMLElement>) => handleGoogleSignIn()}
+                sx={{ height: '40px', backgroundColor: 'white' }}
+              >
+                <Img height='15' alt='error-illustration' src='/icons/googleIcon.svg' />
+                <Typography variant='body2' sx={{ fontWeight: 700, marginLeft: 1.5, fontSize: '15px' }}>
+                  Sign in with Google
+                </Typography>
+              </Button>
             </Link>
           </Box>
-
-        </CardContent>
+        </ResponsiveCardContent>
       </Card>
-      <FooterIllustrationsV1 image1=" " image2=" " />
+      <FooterIllustrationsV1 image1=' ' image2=' ' />
     </Box>
   )
 }

@@ -262,7 +262,7 @@ const RegisterPage = () => {
                   <Twitter sx={{ color: '#1da1f2' }} />
                 </IconButton>
               </Link>*/}
-             <Link href='/' passHref>
+             {/* <Link href='/' passHref>
               <Button
                 fullWidth
                 size='large'
@@ -275,7 +275,7 @@ const RegisterPage = () => {
                   Sign up with Google
                 </Typography>
               </Button>
-            </Link>
+            </Link> */}
             {/* <Link href='/' passHref>
                <Button fullWidth size='large'  variant='contained' onClick={(e: MouseEvent<HTMLElement>) => handleGoogleSignIn()} sx={{height:"40px"}}>
 

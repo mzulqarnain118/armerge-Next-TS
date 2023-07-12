@@ -238,7 +238,7 @@ const LoginPage = () => {
                   />
                 </IconButton>
               </Link> */}
-            <Link href='/' passHref>
+            {/* <Link href='/' passHref>
               <Button
                 fullWidth
                 size='large'
@@ -251,7 +251,7 @@ const LoginPage = () => {
                   Sign in with Google
                 </Typography>
               </Button>
-            </Link>
+            </Link> */}
           </Box>
         </ResponsiveCardContent>
       </Card>

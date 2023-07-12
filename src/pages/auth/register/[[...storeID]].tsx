@@ -182,8 +182,7 @@ const RegisterPage = () => {
       // };
 
       const response = await ApiCallGetSimple('user/sign-up/google')
-      alert(JSON.stringify(response))
-      debugger
+ 
       // Handle the response from your backend API
       if (response) {
         console.log(response)
@@ -268,7 +267,7 @@ const RegisterPage = () => {
                 fullWidth
                 size='large'
                 variant='contained'
-                onClick={(e: MouseEvent<HTMLElement>) => handleGoogleSignIn()}
+                // onClick={(e: MouseEvent<HTMLElement>) => handleGoogleSignIn()}
                 sx={{ height: '40px', backgroundColor: 'white' }}
               >
                 <Img height='15' alt='error-illustration' src='/icons/googleIcon.svg' />

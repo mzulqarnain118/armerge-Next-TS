@@ -107,7 +107,6 @@ const LoginPage = () => {
     // Error: Handle any exceptions that occur during the sign-in process
     console.error('Google Sign-In Error:', error)
   }
-  debugger
   }
   const initialValues: State = {
     password: '',
@@ -244,7 +243,7 @@ const LoginPage = () => {
                 fullWidth
                 size='large'
                 variant='contained'
-                onClick={(e: MouseEvent<HTMLElement>) => handleGoogleSignIn()}
+                // onClick={(e: MouseEvent<HTMLElement>) => handleGoogleSignIn()}
                 sx={{ height: '40px', backgroundColor: 'white' }}
               >
                 <Img height='15' alt='error-illustration' src='/icons/googleIcon.svg' />

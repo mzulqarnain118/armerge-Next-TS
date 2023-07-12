@@ -22,3 +22,10 @@ code:not([class*='language-']):after {
 code[class*='language-'] {
   padding: 0;
 }
+
+.disabled {
+  /* Add your disabled styles here */
+  opacity: 0.5;
+  pointer-events: none;
+  /* Add any other styles as needed */
+}

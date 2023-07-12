@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { ReactNode } from 'react'
 import Router, { useRouter } from 'next/router'
 import { Box, Alert, Snackbar, Button, Typography } from '@mui/material'
@@ -13,17 +13,27 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 // ** Common Components Import
 import Toast from 'src/common/Toast/Toast'
 import { ApiCallPost } from 'src/common/ApiCall'
-import { getLocal, setLocal } from 'src/helpers'
+import { AL, getLocal, setLocal,rmLocal } from 'src/helpers'
 
 interface Props {
   children: ReactNode
 }
 
 const UserLayout = ({ children }: Props) => {
+  const isDisabled = true; // Set your condition here
   const { settings, saveSettings } = useSettings()
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
   const [navOpen, setNavOpen] = useState(false)
   const [emailVerified, setEmailVerified] = useState<Boolean>(false)
+
+  useEffect(() => {
+    if (!getLocal('loggedIn')) {
+      setLocal('loggedIn',false);
+      rmLocal('token');
+      rmLocal('refreshToken');
+      window.location.assign('/auth/login');
+    }
+  }, [])
 
   const toggleNavVisibility = () => {
     setNavOpen(!navOpen)
@@ -67,7 +77,7 @@ const UserLayout = ({ children }: Props) => {
   }
   return (
     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        {typeof window !== 'undefined' && window.localStorage && localStorage.getItem('isEmailVerified') === 'false' ? (
+        {!getLocal('isEmailVerified') ? (
           <Alert sx={{ borderRadius: 0, zIndex: 9999, position: 'sticky' }} severity='error' variant='filled'>
             We need to verify your email address by clicking the link we sent.{' '}
             <span
@@ -92,7 +102,10 @@ const UserLayout = ({ children }: Props) => {
                    >
                      Your email address has been successfully verified.
                    </Alert>}
-           <VerticalLayout
+         
+         </>}
+         {/* <div className={!getLocal('isEmailVerified') && 'disabled'}> */}
+         <VerticalLayout
            hidden={!navOpen && hidden}
            settings={settings}
            saveSettings={saveSettings}
@@ -109,8 +122,8 @@ const UserLayout = ({ children }: Props) => {
            {children}
            {/* <UpgradeToProButton /> */}
          </VerticalLayout>
-         </>}
-     
+         {/* </div> */}
+         
     </Box>
   )
 }

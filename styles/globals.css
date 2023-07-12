@@ -29,3 +29,19 @@ code[class*='language-'] {
   pointer-events: none;
   /* Add any other styles as needed */
 }
+
+
+.body-overlay {
+  position: fixed;
+  background-color: #fbfbfb;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}

@@ -145,7 +145,7 @@ const columns: GridColDef[] = [
           <div className="row p-3" style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:"10px"}} >             
          
  <CustomizedDataGrid
-      rows={response ?? rows}
+      rows={response ?? []}
       columns={columns}
       onRowClick={(params) => console.log('Row clicked:', params)}
       onCellEditCommit={(params) => console.log('Cell edited:', params)}

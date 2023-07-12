@@ -24,6 +24,7 @@ import { ApiCallPost } from 'src/common/ApiCall';
 
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
+import { getLocal, setLocal } from 'src/helpers';
 
 
 
@@ -67,7 +68,11 @@ const EmailVerify = () => {
       if (result?.status === 201) {
         setEmailVerified(true);
         Toast("Email Verified", "success");
-        localStorage.getItem('loggedIn')==="true"?Router.push('/'):Router.push('/auth/login');
+        setLocal('isEmailVerified',true)
+        getLocal('loggedIn')? Router.push('/'):Router.push('/auth/login');
+      }
+      else {
+        getLocal('loggedIn')? Router.push('/') : Router.push('/auth/login');
       }
     } catch (error) {
       console.log(error, "error")

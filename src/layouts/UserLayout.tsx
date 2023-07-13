@@ -1,4 +1,4 @@
-import React, { useState,useLayoutEffect,useEffect } from 'react'
+import React, { useState, useLayoutEffect, useEffect } from 'react'
 import { ReactNode } from 'react'
 import Router, { useRouter } from 'next/router'
 import { Box, Alert, Snackbar, Button, Typography } from '@mui/material'
@@ -13,36 +13,35 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 // ** Common Components Import
 import Toast from 'src/common/Toast/Toast'
 import { ApiCallPost } from 'src/common/ApiCall'
-import { AL, getLocal, setLocal,rmLocal } from 'src/helpers'
+import { AL, getLocal, setLocal, rmLocal } from 'src/helpers'
 import { LoaderSpinner } from 'src/common/Spinner'
+import { set } from 'nprogress'
 
 interface Props {
   children: ReactNode
 }
 
 const UserLayout = ({ children }: Props) => {
-  const isDisabled = true; // Set your condition here
   const { settings, saveSettings } = useSettings()
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
   const [navOpen, setNavOpen] = useState(false)
-  const [emailVerified, setEmailVerified] = useState<Boolean>(false)
   const [isLoading, setIsLoading] = useState<any>(false)
   const [isHideSuccessBar, setIsHideSuccessBar] = useState<Boolean>(false)
+  const [isEmailVerified, setIsEmailVerified] = useState<Boolean>(false)
 
   useLayoutEffect(() => {
     if (!getLocal('loggedIn')) {
       setIsLoading(true)
-      setLocal('loggedIn',false);
-      rmLocal('token');
-      rmLocal('refreshToken');
-      window.location.assign('/auth/login');
+      setLocal('loggedIn', false)
+      rmLocal('token')
+      rmLocal('refreshToken')
+      window.location.assign('/auth/login')
       setIsLoading(false)
     }
+    setIsEmailVerified(getLocal('isEmailVerified'))
   }, [])
 
-  useEffect(() => {
-  
-  }, [isHideSuccessBar])
+  useEffect(() => { isEmailVerified && !getLocal('hideSuccessBar') && setTimeout(()=>hideSuccessBar, 30000)}, [isHideSuccessBar])
 
   const toggleNavVisibility = () => {
     setNavOpen(!navOpen)
@@ -52,7 +51,6 @@ const UserLayout = ({ children }: Props) => {
       const result = await ApiCallPost(`user/verify-email`, { email: localStorage.getItem('email') })
 
       if (result?.status === 201) {
-        setEmailVerified(true)
         Toast('Email Sent to your registered email', 'success')
       }
     } catch (error) {
@@ -66,7 +64,7 @@ const UserLayout = ({ children }: Props) => {
       const result = await ApiCallPost(`user/hideSuccessBar`, { email: localStorage.getItem('email') })
       if (result?.status === 201) {
         setIsHideSuccessBar(true)
-        setLocal('hideSuccessBar',true)
+        setLocal('hideSuccessBar', true)
         setIsLoading(false)
       }
     } catch (error) {
@@ -88,59 +86,59 @@ const UserLayout = ({ children }: Props) => {
       </Box>
     )
   }
-  return (<>
-   {isLoading ? <div  className="body-overlay" >
-        <LoaderSpinner isLoading={isLoading} /></div>:
-    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-     
-        {!getLocal('isEmailVerified') ? (
-          <Alert sx={{ borderRadius: 0, zIndex: 9999, position: 'sticky' }} severity='error' variant='filled'>
-            We need to verify your email address by clicking the link we sent.{' '}
-            <span
-              onClick={() => sendVerificationEmail()}
-              style={{
-                fontWeight: 'bold', // Make the text bold
-                color: 'white', // Set the text color to white
-                cursor: 'pointer' // Make the text cursor pointer
-              }}
+  return (
+    <>
+      {isLoading ? (
+        <div className='body-overlay'>
+          <LoaderSpinner isLoading={isLoading} />
+        </div>
+      ) : (
+        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          {!isEmailVerified ? (
+            <Alert sx={{ borderRadius: 0, zIndex: 9999, position: 'sticky' }} severity="error" variant='filled'>
+              We need to verify your email address by clicking the link we sent.{' '}
+              <span
+                onClick={() => sendVerificationEmail()}
+                style={{
+                  fontWeight: 'bold', // Make the text bold
+                  color: 'white', // Set the text color to white
+                  cursor: 'pointer' // Make the text cursor pointer
+                }}
+              >
+                Send It Again
+              </span>
+            </Alert>
+          ) : !getLocal('hideSuccessBar') ? (
+            <Alert
+              variant='filled'
+              severity="success"
+              sx={{ borderRadius: 0, zIndex: 9999, position: 'sticky' }}
             >
-              Send It Again
-            </span>
-          </Alert>
-        ) : <>
+              Your email address has been successfully verified.
+            </Alert>
+          ) : null}
 
-       
-         {!getLocal('hideSuccessBar') &&  <Alert
-                     sx={{ borderRadius: 0, zIndex: 'tooltip', position: 'sticky' }}
-                     onClose={() => hideSuccessBar()}
-                     variant='filled'
-                     severity='success'
-                   >
-                     Your email address has been successfully verified.
-                   </Alert>}
-         
-         </>}
-         {/* <div className={!getLocal('isEmailVerified') && 'disabled'}> */}
-         <VerticalLayout
-           hidden={!navOpen && hidden}
-           settings={settings}
-           saveSettings={saveSettings}
-           verticalNavItems={VerticalNavItems()}
-           verticalAppBarContent={props => (
-             <VerticalAppBarContent
-               hidden={hidden}
-               settings={settings}
-               saveSettings={saveSettings}
-               toggleNavVisibility={toggleNavVisibility}
-             ></VerticalAppBarContent>
-           )}
-         >
-           {children}
-           {/* <UpgradeToProButton /> */}
-         </VerticalLayout>
-         {/* </div> */}
-         
-    </Box>}
+          {/* <div className={!isEmailVerified && 'disabled'}> */}
+          <VerticalLayout
+            hidden={!navOpen && hidden}
+            settings={settings}
+            saveSettings={saveSettings}
+            verticalNavItems={VerticalNavItems()}
+            verticalAppBarContent={props => (
+              <VerticalAppBarContent
+                hidden={hidden}
+                settings={settings}
+                saveSettings={saveSettings}
+                toggleNavVisibility={toggleNavVisibility}
+              ></VerticalAppBarContent>
+            )}
+          >
+            {children}
+            {/* <UpgradeToProButton /> */}
+          </VerticalLayout>
+          {/* </div> */}
+        </Box>
+      )}
     </>
   )
 }

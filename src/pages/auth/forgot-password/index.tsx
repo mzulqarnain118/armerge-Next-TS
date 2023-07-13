@@ -3,9 +3,10 @@ import React,{ ChangeEvent, ReactNode, useState } from 'react'
 
 // ** Next Imports
 import Router from 'next/router';
+import Link from 'next/link'
 
 // ** MUI Components
-import Box from '@mui/material/Box'
+import {Box} from '@mui/material'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
@@ -56,6 +57,7 @@ const Img = styled('img')(({ theme }) => ({
   }))
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import { LinkStyled } from '../login/[[...storeID]]';
 
 const ForgotPassword = () => {
   // ** State
@@ -97,7 +99,7 @@ const ForgotPassword = () => {
             </Typography>
           </Box>
           {!emailSentFlag && <Formik
-            initialValues={initialValues}
+            initialValues={initialValues} 
             onSubmit={onSubmit}
             validationSchema={ForgotPasswordSchema}
           >
@@ -115,6 +117,13 @@ const ForgotPassword = () => {
               </Form>
             )}
           </Formik>}
+          <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                  <Typography variant='body2' sx={{ marginTop: 2 }}>
+                    <Link passHref href='/auth/login'>
+                      <LinkStyled>Sign in instead</LinkStyled>
+                    </Link>
+                  </Typography>
+                </Box>
         </CardContent>
       </Card>
    

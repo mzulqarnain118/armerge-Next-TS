@@ -45,7 +45,7 @@ const UserDropdown = () => {
 
   const handleDropdownClose = (url?: string) => {
     if (url) {
-      localStorage.removeItem('isLoggedin')
+      localStorage.removeItem('loggedIn')
       localStorage.removeItem('token')
       localStorage.removeItem('refreshToken')
       router.push(url)

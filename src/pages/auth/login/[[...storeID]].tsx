@@ -51,7 +51,7 @@ const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
 }))
 
-const LinkStyled = styled('a')(({ theme }) => ({
+export const LinkStyled = styled('a')(({ theme }) => ({
   fontSize: '0.875rem',
   textDecoration: 'none',
   color: theme.palette.primary.main
@@ -219,7 +219,7 @@ const LoginPage = () => {
               </Link>
             </Typography>
           </Box>
-          <Divider sx={{ my: 5 }}>or</Divider>
+          {/* <Divider sx={{ my: 5 }}>or</Divider> */}
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {/* <Link href='/' passHref>
                 <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>

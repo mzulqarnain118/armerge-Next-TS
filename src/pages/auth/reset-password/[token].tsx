@@ -146,27 +146,24 @@ const ResetPassword = () => {
               <Form className="row">
                 <PasswordField  name='password' label='Password' />
                 <PasswordField  name='confirmPassword' label='Confirm Password' />
-                <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7 }}>
+                <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 3 }}>
                   Reset
                 </Button>
-                <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-                  {/* <Typography variant='body2' sx={{ marginRight: 2 }}>
-                    Already have an account?
-                  </Typography> */}
+                <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
                   <Typography variant='body2'>
                     <Link passHref href='/auth/login'>
                       <LinkStyled>Sign in instead</LinkStyled>
                     </Link>
                   </Typography>
                 </Box>
-                <Divider sx={{ my: 5 }}>or</Divider>
+                {/* <Divider sx={{ my: 5 }}>or</Divider>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Link href='/' passHref>
                     <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
                       <Google sx={{ color: '#db4437' }} />
                     </IconButton>
                   </Link>
-                </Box>
+                </Box> */}
               </Form>
 
             )}

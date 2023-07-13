@@ -15,7 +15,6 @@ import Toast from 'src/common/Toast/Toast'
 import { ApiCallPost } from 'src/common/ApiCall'
 import { AL, getLocal, setLocal, rmLocal } from 'src/helpers'
 import { LoaderSpinner } from 'src/common/Spinner'
-import { set } from 'nprogress'
 
 interface Props {
   children: ReactNode
@@ -39,9 +38,13 @@ const UserLayout = ({ children }: Props) => {
       setIsLoading(false)
     }
     setIsEmailVerified(getLocal('isEmailVerified'))
+    setIsHideSuccessBar(getLocal('hideSuccessBar'))
   }, [])
 
-  useEffect(() => { isEmailVerified && !getLocal('hideSuccessBar') && setTimeout(()=>hideSuccessBar, 30000)}, [isHideSuccessBar])
+  useEffect(() => { isEmailVerified && !isHideSuccessBar && setTimeout(() => {
+    hideSuccessBar()
+  }, 30000);
+}, [isHideSuccessBar,isEmailVerified])
 
   const toggleNavVisibility = () => {
     setNavOpen(!navOpen)

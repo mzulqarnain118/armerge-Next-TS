@@ -58,9 +58,7 @@ const EmailVerify = () => {
   const theme = useTheme()
  const router = useRouter();
   const { token } =  router.query;
-  console.log("🚀 ~ file: [token].tsx:59 ~ EmailVerify ~ token:", token)
-  console.log(token)
-  
+
  const validateToken = async () => {
     try {
       const result = await ApiCallPost(`user/verify-email/${token}`,{});

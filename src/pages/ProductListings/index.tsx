@@ -17,6 +17,7 @@ import Formheading from 'src/common/Formheading';
 import Toggle from 'src/common/Toggle';
 import { GridColDef } from '@mui/x-data-grid';
 import Toast from 'src/common/Toast/Toast';
+import { IconImg } from '../auth/register/[[...storeID]]';
 
 const ProductListings = () => {
   // ** State
@@ -44,6 +45,9 @@ const columns: GridColDef[] = [
         headerName: 'Image',
         width: 150,
         editable: true,
+        renderCell: (params) => (
+          <IconImg height='15' alt='error-illustration' src='/icons/googleIcon.svg' /> 
+        ),
       },
     {
       field: 'product_id',
@@ -69,14 +73,14 @@ const columns: GridColDef[] = [
         headerName: 'Try-On Visibility',
         width: 160,
         editable: true,
-        renderCell: (params) => {
-            return (
-              <Toggle
-                checked={params.value}
-                onChange={handleToggle(params.value)}
-              />
-            );
-          },
+        // renderCell: (params) => {
+        //     return (
+        //       <Toggle
+        //         checked={params.value}
+        //         onChange={handleToggle(params.value)}
+        //       />
+        //     );
+        //   },
       },
       {
         field: '3d_object_visibility',

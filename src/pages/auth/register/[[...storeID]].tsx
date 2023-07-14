@@ -74,7 +74,7 @@ const LinkStyled = styled('a')(({ theme }) => ({
   color: theme.palette.primary.main
 }))
 
-const Img = styled('img')(({ theme }) => ({
+export const IconImg = styled('img')(({ theme }) => ({
   marginBottom: theme.spacing(10),
   [theme.breakpoints.down('lg')]: {
     height: 37,
@@ -206,7 +206,7 @@ const RegisterPage = () => {
       <Card sx={{ zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>
         <ResponsiveCardContent>
           <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Img height='37' alt='error-illustration' src='/images/armergeLogo.svg' />
+            <IconImg height='37' alt='error-illustration' src='/images/armergeLogo.svg' />
           </Box>
           <Box sx={{ mb: 6, textAlign: 'center' }}>
             <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5, fontSize: '30px' }}>
@@ -270,7 +270,7 @@ const RegisterPage = () => {
                 // onClick={(e: MouseEvent<HTMLElement>) => handleGoogleSignIn()}
                 sx={{ height: '40px', backgroundColor: 'white' }}
               >
-                <Img height='15' alt='error-illustration' src='/icons/googleIcon.svg' />
+                <IconImg height='15' alt='error-illustration' src='/icons/googleIcon.svg' />
                 <Typography variant='body2' sx={{ fontWeight: 700, marginLeft: 1.5, fontSize: '15px' }}>
                   Sign up with Google
                 </Typography>
@@ -279,7 +279,7 @@ const RegisterPage = () => {
             {/* <Link href='/' passHref>
                <Button fullWidth size='large'  variant='contained' onClick={(e: MouseEvent<HTMLElement>) => handleGoogleSignIn()} sx={{height:"40px"}}>
 
-            <Img height='15' alt='error-illustration' src='/icons/googleIcon.svg' /> 
+            <IconImg height='15' alt='error-illustration' src='/icons/googleIcon.svg' /> 
              <Typography variant='h8' >
                Sign up with Google
             </Typography>

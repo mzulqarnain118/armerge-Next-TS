@@ -108,7 +108,7 @@ const columns: GridColDef[] = [
           <AccountSettings data={row} setTableUpdate={setTableUpdate} setopenPopup={handlePopup} label={'Update'} submitAction={'Update'} setUpdation={setUpdation} /> :
 
           <>
-<Stack sx={{display:"flex",alignItems:"center",flexDirection:"row",gap:"15px"}}>
+{/* <Stack sx={{display:"flex",alignItems:"center",flexDirection:"row",gap:"15px"}}>
 <Box
       sx={{
         '& > :not(style)': {
@@ -126,7 +126,7 @@ const columns: GridColDef[] = [
      <Button variant="contained" 
           //  onClick={() => setAddition(!addition)}
            >Add Team Members <Add /></Button>
-</Stack>
+</Stack> */}
              
  <CustomizedDataGrid
       rows={response ?? rows}

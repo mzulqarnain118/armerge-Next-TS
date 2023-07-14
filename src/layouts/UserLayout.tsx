@@ -15,6 +15,7 @@ import Toast from 'src/common/Toast/Toast'
 import { ApiCallPost } from 'src/common/ApiCall'
 import { AL, getLocal, setLocal, rmLocal } from 'src/helpers'
 import { LoaderSpinner } from 'src/common/Spinner'
+import withAuth from 'src/pages/withAuth'
 
 interface Props {
   children: ReactNode
@@ -24,13 +25,12 @@ const UserLayout = ({ children }: Props) => {
   const { settings, saveSettings } = useSettings()
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
   const [navOpen, setNavOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState<any>(false)
+  const [isLoading, setIsLoading] = useState<Boolean>(!getLocal('loggedIn'))
   const [isHideSuccessBar, setIsHideSuccessBar] = useState<Boolean>(false)
   const [isEmailVerified, setIsEmailVerified] = useState<Boolean>(false)
 
-  useLayoutEffect(() => {
-    if (!getLocal('loggedIn')) {
-      setIsLoading(true)
+  useEffect( () => {
+    if (isLoading) {
       setLocal('loggedIn', false)
       rmLocal('token')
       rmLocal('refreshToken')
@@ -39,7 +39,7 @@ const UserLayout = ({ children }: Props) => {
     }
     setIsEmailVerified(getLocal('isEmailVerified'))
     setIsHideSuccessBar(getLocal('hideSuccessBar'))
-  }, [])
+  }, [isLoading])
 
   useEffect(() => { isEmailVerified && !isHideSuccessBar && setTimeout(() => {
     hideSuccessBar()
@@ -63,17 +63,14 @@ const UserLayout = ({ children }: Props) => {
   }
   const hideSuccessBar = async () => {
     try {
-      setIsLoading(true)
       const result = await ApiCallPost(`user/hideSuccessBar`, { email: localStorage.getItem('email') })
       if (result?.status === 201) {
         setIsHideSuccessBar(true)
         setLocal('hideSuccessBar', true)
-        setIsLoading(false)
       }
     } catch (error) {
       console.log(error, 'error')
       Toast(error.message, 'error')
-      setIsLoading(false)
     }
   }
   const UpgradeToProImg = () => {
@@ -89,14 +86,9 @@ const UserLayout = ({ children }: Props) => {
       </Box>
     )
   }
+
   return (
-    <>
-      {isLoading ? (
-        <div className='body-overlay'>
-          <LoaderSpinner isLoading={isLoading} />
-        </div>
-      ) : (
-        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           {!isEmailVerified ? (
             <Alert sx={{ borderRadius: 0, zIndex: 9999, position: 'sticky' }} severity="error" variant='filled'>
               We need to verify your email address by clicking the link we sent.{' '}
@@ -141,9 +133,8 @@ const UserLayout = ({ children }: Props) => {
           </VerticalLayout>
           {/* </div> */}
         </Box>
-      )}
-    </>
   )
 }
 
 export default UserLayout
+// export default withAuth(UserLayout)

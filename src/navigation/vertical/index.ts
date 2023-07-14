@@ -22,26 +22,26 @@ const navigation = (): VerticalNavItemsType => {
       icon: HomeOutline,
       path: '/'
     },
-    {
-      title: 'Team Management',
-      icon: ManageAccountsIcon,
-      path: '/team-management'
-    },
+    // {
+    //   title: 'Team Management',
+    //   icon: ManageAccountsIcon,
+    //   path: '/team-management'
+    // },
     {
       title: 'Product Listing',
       icon: ListAltOutlined,
       path: '/ProductListings'
     },
-   {
-  title: 'My Orders',
-  icon: ShoppingCartOutlined,
-  path: '/orders',
-},
- {
-  title: 'Ready to Publish',
-  icon: Publish,
-  path: '/publish',
-},
+//    {
+//   title: 'My Orders',
+//   icon: ShoppingCartOutlined,
+//   path: '/orders',
+// },
+//  {
+//   title: 'Ready to Publish',
+//   icon: Publish,
+//   path: '/publish',
+// },
     // {
     //   title: 'Error',
     //   icon: AlertCircleOutline,

@@ -18,6 +18,7 @@ import Toggle from 'src/common/Toggle';
 import { GridColDef } from '@mui/x-data-grid';
 import Toast from 'src/common/Toast/Toast';
 import { IconImg } from '../auth/register/[[...storeID]]';
+import { AL, getLocal } from 'src/helpers';
 
 const ProductListings = () => {
   // ** State
@@ -45,9 +46,9 @@ const columns: GridColDef[] = [
         headerName: 'Image',
         width: 150,
         editable: true,
-        renderCell: (params) => (
-          <IconImg height='15' alt='error-illustration' src='/icons/googleIcon.svg' /> 
-        ),
+        // renderCell: (params) => (
+        //   <IconImg height='15' alt='product-image' src={params?.value?.src} /> 
+        // ),
       },
     {
       field: 'product_id',
@@ -73,14 +74,14 @@ const columns: GridColDef[] = [
         headerName: 'Try-On Visibility',
         width: 160,
         editable: true,
-        // renderCell: (params) => {
-        //     return (
-        //       <Toggle
-        //         checked={params.value}
-        //         onChange={handleToggle(params.value)}
-        //       />
-        //     );
-        //   },
+        renderCell: (params) => {
+            return (
+              <Toggle
+                checked={params.value}
+                onChange={handleToggle(params.value)}
+              />
+            );
+          },
       },
       {
         field: '3d_object_visibility',
@@ -109,12 +110,9 @@ const columns: GridColDef[] = [
     {id:1,image:"image",product_id:"product_id",product_name:"product_name",product_details:"product_details",try_on_visibility:true,"3d_object_visibility":"3d_object_visibility",added_date:"added_date",details:"details"}
     ];
   // ** APIS CALL
-  let storeID= "";
-  if (typeof window !== 'undefined' && window.localStorage) {
-    storeID=localStorage.getItem('storeID');
-  }
+  let storeID= String(getLocal('storeID'));
   const { response, error } = ApiCallGet(`store/products/${storeID}`, { getUpdatedData: tableUpdate });
-    
+
 
   const handlePopup = (value) => {
     setopenPopup(value);

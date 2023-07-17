@@ -7,7 +7,7 @@ const Toast = async (text:string, type:string) => {
     if (type === 'error') {
 
         toast.error(text, {
-            position: "top-center",
+            position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -19,7 +19,7 @@ const Toast = async (text:string, type:string) => {
     } else if (type === 'default') {
 
         toast(text, {
-            position: "top-center",
+            position: "top-right",
             autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,

@@ -113,7 +113,7 @@ const UserLayout = ({ children }: Props) => {
             </Alert>
           ) : null}
 
-          {/* <div className={!isEmailVerified && 'disabled'}> */}
+          <div className={!isEmailVerified && 'disabled'}>
           <VerticalLayout
             hidden={!navOpen && hidden}
             settings={settings}
@@ -131,7 +131,7 @@ const UserLayout = ({ children }: Props) => {
             {children}
             {/* <UpgradeToProButton /> */}
           </VerticalLayout>
-          {/* </div> */}
+          </div>
         </Box>
   )
 }

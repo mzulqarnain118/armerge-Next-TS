@@ -42,6 +42,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+import { setLocal } from 'src/helpers'
 
 interface State {
   password: string
@@ -103,19 +104,14 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 }))
 
 const RegisterPage = () => {
-  console.log(process.env.LIVE, 'process.env.LIVE')
-
   // ** States
   // const [showPassword, setShowPassword] = useState<Boolean>(false)
   // const [showConfirmPassword, setShowConfirmPassword] = useState<Boolean>(false)
   const router = useRouter()
   const { storeID } = router.query
-  console.log(storeID)
+  
   useEffect(() => {
-    // Check if localStorage is available
-    if (typeof window !== 'undefined' && window.localStorage) {
-      localStorage.setItem('storeID', String(storeID))
-    }
+      setLocal('storeID',String(storeID))
   }, [storeID])
   const initialValues: State = {
     firstName: '',
@@ -131,7 +127,8 @@ const RegisterPage = () => {
   const onSubmit = async (values: State, { resetForm }) => {
     delete values.confirmPassword
     try {
-      const result = await ApiCallPost('user/sign-up', values)
+      debugger
+      const result = await ApiCallPost('user/sign-up', {...values, storeID:String(storeID)})
 
       if (result?.status === 201) {
         resetForm()
@@ -139,16 +136,18 @@ const RegisterPage = () => {
         const accessToken = result?.data?.data?.accessToken
         const refreshToken = result?.data?.data?.refreshToken
         const user = result?.data?.data.user
-        localStorage.setItem('token', accessToken)
-        localStorage.setItem('refreshToken', refreshToken)
-        localStorage.setItem('loggedIn', String(true))
-        localStorage.setItem('email', user?.email)
-        localStorage.setItem('role', user?.role)
-        localStorage.setItem('id', user?._id)
-        localStorage.setItem('hideSuccessBar', user?.hideSuccessBar)
-        localStorage.setItem('name', user?.firstName + ' ' + user?.lastName)
-        localStorage.setItem('user', JSON.stringify(user)) // store as a string
-        localStorage.setItem('isEmailVerified', user?.isEmailVerified)
+        setLocal('token', accessToken)
+        setLocal('refreshToken', refreshToken)
+        setLocal('loggedIn', true)
+        setLocal('email', user?.email)
+        setLocal('role', user?.role)
+        setLocal('id', user?._id)
+        setLocal('hideSuccessBar', user?.hideSuccessBar)
+        setLocal('name', user?.firstName + ' ' + user?.lastName)
+        setLocal('user',user) 
+        setLocal('storeID',user?.storeID)
+        console.log("🚀 ~ file: [[...storeID]].tsx:147 ~ onSubmit ~ user?.storeID:", user?.storeID)
+        setLocal('isEmailVerified', user?.isEmailVerified)
         Router.push('/')
       }
     } catch (error) {

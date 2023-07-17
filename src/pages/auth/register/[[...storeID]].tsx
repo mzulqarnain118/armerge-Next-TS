@@ -127,7 +127,6 @@ const RegisterPage = () => {
   const onSubmit = async (values: State, { resetForm }) => {
     delete values.confirmPassword
     try {
-      debugger
       const result = await ApiCallPost('user/sign-up', {...values, storeID:String(storeID)})
 
       if (result?.status === 201) {

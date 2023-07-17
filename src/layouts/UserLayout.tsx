@@ -16,17 +16,21 @@ import { ApiCallPost } from 'src/common/ApiCall'
 import { AL, getLocal, setLocal, rmLocal } from 'src/helpers'
 import { LoaderSpinner } from 'src/common/Spinner'
 import withAuth from 'src/pages/withAuth'
+import { log } from 'console'
 
 interface Props {
   children: ReactNode
 }
 
 const UserLayout = ({ children }: Props) => {
+  const router = useRouter();
+  const { verified } = router.query;
   const { settings, saveSettings } = useSettings()
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
   const [navOpen, setNavOpen] = useState(false)
   const [isLoading, setIsLoading] = useState<Boolean>(!getLocal('loggedIn'))
-  const [isHideSuccessBar, setIsHideSuccessBar] = useState<Boolean>(false)
+  const [startHideSuccessBarTimer, setstartHideSuccessBarTimer] = useState<boolean>(Boolean(verified) || false);
+  const [isHideSuccessBar, setIsHideSuccessBar] = useState<boolean>(Boolean(verified) || false);
   const [isEmailVerified, setIsEmailVerified] = useState<Boolean>(false)
 
   useEffect( () => {
@@ -41,10 +45,13 @@ const UserLayout = ({ children }: Props) => {
     setIsHideSuccessBar(getLocal('hideSuccessBar'))
   }, [isLoading])
 
-  useEffect(() => { isEmailVerified && !isHideSuccessBar && setTimeout(() => {
-    hideSuccessBar()
+  useEffect(() => {
+    console.log(isHideSuccessBar, 'isHideSuccessBar')
+    startHideSuccessBarTimer && setTimeout(() => {
+    setIsHideSuccessBar(false)
+    setstartHideSuccessBarTimer(false)
   }, 30000);
-}, [isHideSuccessBar,isEmailVerified])
+}, [isHideSuccessBar])
 
   const toggleNavVisibility = () => {
     setNavOpen(!navOpen)
@@ -103,7 +110,7 @@ const UserLayout = ({ children }: Props) => {
                 Send It Again
               </span>
             </Alert>
-          ) : !getLocal('hideSuccessBar') ? (
+          ) : isHideSuccessBar ? (
             <Alert
               variant='filled'
               severity="success"

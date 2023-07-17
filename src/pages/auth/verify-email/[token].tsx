@@ -67,10 +67,10 @@ const EmailVerify = () => {
         setEmailVerified(true);
         Toast("Email Verified", "success");
         setLocal('isEmailVerified',true)
-        getLocal('loggedIn')? Router.push('/'):Router.push('/auth/login');
+        getLocal('loggedIn')? router.push({pathname: '/',query: { verified: true }}):Router.push('/auth/login');
       }
       else {
-        getLocal('loggedIn')? Router.push('/') : Router.push('/auth/login');
+        getLocal('loggedIn')? router.push({pathname: '/',query: { verified: true }}) : Router.push('/auth/login');
       }
     } catch (error) {
       console.log(error, "error")

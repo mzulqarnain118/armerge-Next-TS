@@ -72,7 +72,6 @@ const baseUrl = 'https://arm-api.devcrew.io/legend/api/v1/public/'
 const token=""
 const headers = {
   'Content-Type': 'application/json',
-  'Access-Control-Allow-Origin': '*' // or specify the allowed origin(s) here
 };
 
 const fileHeaders = { 'csrf_token': csrf_token };

@@ -145,16 +145,19 @@ const RegisterPage = () => {
         setLocal('name', user?.firstName + ' ' + user?.lastName)
         setLocal('user',user) 
         setLocal('storeID',user?.storeID)
-        console.log("🚀 ~ file: [[...storeID]].tsx:147 ~ onSubmit ~ user?.storeID:", user?.storeID)
         setLocal('isEmailVerified', user?.isEmailVerified)
-        Router.push('/')
+        router.push('/');//Do a fast client-side transition to the already prefetched dashboard page
       }
     } catch (error) {
-      resetForm()
       console.log(error, 'error')
       Toast(error.message, 'error')
     }
   }
+
+  useEffect(() => {
+    // Prefetch the dashboard page
+    router.prefetch('/')
+  }, [router])
 
   async function handleGoogleSignIn() {
     try {

@@ -14,9 +14,7 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 import Toast from 'src/common/Toast/Toast'
 import { ApiCallPost } from 'src/common/ApiCall'
 import { AL, getLocal, setLocal, rmLocal } from 'src/helpers'
-import { LoaderSpinner } from 'src/common/Spinner'
 import withAuth from 'src/pages/withAuth'
-import { log } from 'console'
 
 interface Props {
   children: ReactNode
@@ -28,37 +26,36 @@ const UserLayout = ({ children }: Props) => {
   const { settings, saveSettings } = useSettings()
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
   const [navOpen, setNavOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState<Boolean>(!getLocal('loggedIn'))
-  const [startHideSuccessBarTimer, setstartHideSuccessBarTimer] = useState<boolean>(Boolean(verified) || false);
-  const [isHideSuccessBar, setIsHideSuccessBar] = useState<boolean>(Boolean(verified) || false);
+  const [startHideSuccessBarTimer, setstartHideSuccessBarTimer] = useState<boolean>(verified==="true"?true : false);
+  const [isHideSuccessBar, setIsHideSuccessBar] = useState<boolean>(verified==="true"?true : false);
   const [isEmailVerified, setIsEmailVerified] = useState<Boolean>(false)
+  console.log(verified,startHideSuccessBarTimer,isHideSuccessBar, 'verified')
+
+// Get the previous route
+const previousRoute = router?.query?.from;
+
+const handleURLChange = () => {
+  router.push('/', undefined, { shallow: true });
+};
 
   useEffect( () => {
-    if (isLoading) {
-      setLocal('loggedIn', false)
-      rmLocal('token')
-      rmLocal('refreshToken')
-      window.location.assign('/auth/login')
-      setIsLoading(false)
-    }
     setIsEmailVerified(getLocal('isEmailVerified'))
-    setIsHideSuccessBar(getLocal('hideSuccessBar'))
-  }, [isLoading])
+  }, [])
 
   useEffect(() => {
-    console.log(isHideSuccessBar, 'isHideSuccessBar')
     startHideSuccessBarTimer && setTimeout(() => {
+    handleURLChange()
     setIsHideSuccessBar(false)
     setstartHideSuccessBarTimer(false)
   }, 30000);
-}, [isHideSuccessBar])
+}, [isHideSuccessBar,startHideSuccessBarTimer])
 
   const toggleNavVisibility = () => {
     setNavOpen(!navOpen)
   }
   const sendVerificationEmail = async () => {
     try {
-      const result = await ApiCallPost(`user/verify-email`, { email: localStorage.getItem('email') })
+      const result = await ApiCallPost(`user/verify-email`, { email: getLocal('email') })
 
       if (result?.status === 201) {
         Toast('Email Sent to your registered email', 'success')
@@ -70,7 +67,7 @@ const UserLayout = ({ children }: Props) => {
   }
   const hideSuccessBar = async () => {
     try {
-      const result = await ApiCallPost(`user/hideSuccessBar`, { email: localStorage.getItem('email') })
+      const result = await ApiCallPost(`user/hideSuccessBar`, { email: getLocal('email') })
       if (result?.status === 201) {
         setIsHideSuccessBar(true)
         setLocal('hideSuccessBar', true)
@@ -143,5 +140,4 @@ const UserLayout = ({ children }: Props) => {
   )
 }
 
-export default UserLayout
-// export default withAuth(UserLayout)
+export default withAuth(UserLayout)

@@ -12,7 +12,7 @@ export const LoaderSpinner: React.FC<LoaderSpinnerProps> = ({ isLoading, color }
   return (
     <LoadingOverlay
       active={isLoading}
-      spinner={<Circles color={color ?? '#43ACCB'} />}
+      spinner={<Circles color={color ?? '#006FB7'} />}
     />
   );
 };

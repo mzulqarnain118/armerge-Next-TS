@@ -36,6 +36,7 @@ import Toast from 'src/common/Toast/Toast'
 import { LoginSchema } from 'src/helpers/validations/LoginSchema'
 import { Formik, Form } from 'formik'
 import { ApiCallPost, ApiCallGetSimple } from 'src/common/ApiCall'
+import { setLocal } from 'src/helpers'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
@@ -122,16 +123,16 @@ const LoginPage = () => {
         const user = result?.data?.data.user
         
         // Set token and user data in localStorage
-        localStorage.setItem('token', accessToken)
-        localStorage.setItem('refreshToken', refreshToken)
-        localStorage.setItem('loggedIn', String(true))
-        localStorage.setItem('email', user?.email)
-        localStorage.setItem('role', user?.role)
-        localStorage.setItem('id', user?._id)
-        localStorage.setItem('hideSuccessBar', user?.hideSuccessBar)
-        localStorage.setItem('name', user?.firstName + ' ' + user?.lastName)
-        localStorage.setItem('user', JSON.stringify(user)) // store as a string
-        localStorage.setItem('isEmailVerified', user?.isEmailVerified)
+        setLocal('token', accessToken)
+        setLocal('refreshToken', refreshToken)
+        setLocal('loggedIn', true)
+        setLocal('email', user?.email)
+        setLocal('role', user?.role)
+        setLocal('id', user?._id)
+        setLocal('hideSuccessBar', user?.hideSuccessBar)
+        setLocal('name', user?.firstName + ' ' + user?.lastName)
+        setLocal('user', user) // store as a string
+        setLocal('isEmailVerified', user?.isEmailVerified)
 
         // Check if "remember me" checkbox is checked
         if (rememberMe) {
@@ -139,13 +140,18 @@ const LoginPage = () => {
         }
         Toast('Logged In Successfully', 'success')
         resetForm()
-        Router.push('/')
+        router.push('/');//Do a fast client-side transition to the already prefetched dashboard page
       }
     } catch (error) {
       console.log(error, 'error')
       Toast(error.message, 'error')
     }
   }
+
+  useEffect(() => {
+    // Prefetch the dashboard page
+    router.prefetch('/')
+  }, [router])
 
   // ** Hook
   const theme = useTheme()

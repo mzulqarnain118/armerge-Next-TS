@@ -68,7 +68,7 @@ const getError = (error: AxiosError) => {
 
 const csrf_token = 'jaf?lsajf#alskjf%aljdkf?klasf';
 // const baseUrl = 'http://localhost:4000/api/v1/public/'
-const baseUrl = 'https://arm-api.devcrew.io/legend/api/v1/public/'
+const baseUrl = 'https://arm-api.devcrew.io/api/v1/public/'
 const token=""
 const headers = {
   'Content-Type': 'application/json',

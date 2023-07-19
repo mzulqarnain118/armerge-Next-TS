@@ -46,9 +46,9 @@ const columns: GridColDef[] = [
         headerName: 'Image',
         width: 150,
         editable: true,
-        // renderCell: (params) => (
-        //   <IconImg height='15' alt='product-image' src={params?.value?.src} /> 
-        // ),
+        renderCell: (params) => (
+          <IconImg height='15' alt='product-image' src={params?.value?.src} /> 
+        ),
       },
     {
       field: 'product_id',

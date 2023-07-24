@@ -35,7 +35,7 @@ import PasswordField from 'src/common/PasswordField'
 import Toast from 'src/common/Toast/Toast'
 import { LoginSchema } from 'src/helpers/validations/LoginSchema'
 import { Formik, Form } from 'formik'
-import { ApiCallPost, ApiCallGetSimple } from 'src/common/ApiCall'
+import { ApiCallPost, ApiCallGetSimple,ApiCallGet } from 'src/common/ApiCall'
 import { setLocal } from 'src/helpers'
 
 // ** Demo Imports
@@ -147,8 +147,11 @@ const LoginPage = () => {
       Toast(error.message, 'error')
     }
   }
-
+  // const { response, error } = ApiCallGet(`store/connected/devcrew-tryons-store.myshopify.com`,{});
+     
+  // console.log("🚀 ~ file: [[...storeID]].tsx:154 ~ useEffect ~ response:", response)
   useEffect(() => {
+
     // Prefetch the dashboard page
     router.prefetch('/')
   }, [router])

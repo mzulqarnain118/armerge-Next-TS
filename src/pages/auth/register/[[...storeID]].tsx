@@ -104,15 +104,13 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 }))
 
 const RegisterPage = () => {
-  // ** States
-  // const [showPassword, setShowPassword] = useState<Boolean>(false)
-  // const [showConfirmPassword, setShowConfirmPassword] = useState<Boolean>(false)
   const router = useRouter()
   const { storeID } = router.query
   
   useEffect(() => {
       setLocal('storeID',String(storeID))
   }, [storeID])
+
   const initialValues: State = {
     firstName: '',
     lastName: '',
@@ -123,14 +121,15 @@ const RegisterPage = () => {
 
   // ** Hook
   const theme = useTheme()
-
-  const onSubmit = async (values: State, { resetForm }) => {
+  const handleFormReset = (resetForm) => {
+    resetForm(); // Call resetForm to reset the form
+  };
+  const onSubmit = async (values, resetForm, handleFormReset) => {
     delete values.confirmPassword
     try {
       const result = await ApiCallPost('user/sign-up', {...values, storeID:String(storeID)})
 
       if (result?.status === 201) {
-        resetForm()
         Toast('Registered Successfully', 'success')
         const accessToken = result?.data?.data?.accessToken
         const refreshToken = result?.data?.data?.refreshToken
@@ -151,6 +150,8 @@ const RegisterPage = () => {
     } catch (error) {
       console.log(error, 'error')
       Toast(error.message, 'error')
+    } finally{        
+      handleFormReset(resetForm);
     }
   }
 
@@ -204,9 +205,9 @@ const RegisterPage = () => {
   return (
     <Box style={{ display: 'flex', height: '100vh' }}>
       <LeftContent height='100%' alt='error-illustration' src='/images/pages/AuthLeftContent.png' style={{ flex: 1 }} />
-      <Card sx={{ zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <Card sx={{ zIndex: 1, flex: 1, display: 'flex', flexDirection: 'column',justifyContent:"center",alignItems: 'center', }}>
         <ResponsiveCardContent>
-          <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <IconImg height='37' alt='error-illustration' src='/images/armergeLogo.svg' />
           </Box>
           <Box sx={{ mb: 6, textAlign: 'center' }}>
@@ -214,11 +215,11 @@ const RegisterPage = () => {
               Create Account
             </Typography>
           </Box>
-          <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={signUpSchema}>
+          <Formik initialValues={initialValues} onSubmit={(values, { resetForm }) => onSubmit(values, resetForm, handleFormReset)} validationSchema={signUpSchema}>
             {({ errors, touched, values, dirty, isValid, handleChange, handleBlur }) => (
               <Form className='row'>
                 <TextField autoFocus fullWidth name='firstName' label='First Name' />
-                <TextField autoFocus fullWidth name='lastName' label='Last Name' />
+                <TextField  fullWidth name='lastName' label='Last Name' />
                 <TextField fullWidth type='email' name='email' label='Email' />
                 <PasswordField name='password' label='Password' />
                 <PasswordField name='confirmPassword' label='Confirm Password' />
@@ -226,10 +227,10 @@ const RegisterPage = () => {
                   control={<Checkbox />}
                   label={
                     <Fragment>
-                      <span>I agree to </span>
+                      <span>I agree to  all </span>
                       <Link href='/' passHref>
                         <LinkStyled onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
-                          all Terms & Conditions
+                          Terms & Conditions
                         </LinkStyled>
                       </Link>
                     </Fragment>

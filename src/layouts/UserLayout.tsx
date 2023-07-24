@@ -92,7 +92,7 @@ const handleURLChange = () => {
   }
 
   return (
-     <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+     <Box sx={{ width: '100%' , display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           {!isEmailVerified ? (
             <Alert sx={{ borderRadius: 0, zIndex: 9999, position: 'sticky' }} severity="error" variant='filled'>
               We need to verify your email address by clicking the link we sent.{' '}

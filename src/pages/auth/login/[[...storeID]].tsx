@@ -74,13 +74,13 @@ const LoginPage = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false)
   const router = useRouter()
   const { storeID } = router.query
-  console.log(storeID)
-  useEffect(() => {
-    // Check if localStorage is available
-    if (typeof window !== 'undefined' && window.localStorage) {
-      localStorage.setItem('storeID', String(storeID))
-    }
-  }, [storeID])
+
+  // useEffect(() => {
+  //   // Check if localStorage is available
+  //   if (typeof window !== 'undefined' && window.localStorage) {
+  //     localStorage.setItem('storeID', String(storeID))
+  //   }
+  // }, [storeID])
   // Set the rememberMe state to true if the rememberMe checkbox was previously checked
   useEffect(() => {
     const rememberMeValue = localStorage.getItem('rememberMe') === 'true'
@@ -133,6 +133,7 @@ const LoginPage = () => {
         setLocal('name', user?.firstName + ' ' + user?.lastName)
         setLocal('user', user) // store as a string
         setLocal('isEmailVerified', user?.isEmailVerified)
+        setLocal('storeID',user?.storeID)
 
         // Check if "remember me" checkbox is checked
         if (rememberMe) {
@@ -147,9 +148,7 @@ const LoginPage = () => {
       Toast(error.message, 'error')
     }
   }
-  // const { response, error } = ApiCallGet(`store/connected/devcrew-tryons-store.myshopify.com`,{});
-     
-  // console.log("🚀 ~ file: [[...storeID]].tsx:154 ~ useEffect ~ response:", response)
+
   useEffect(() => {
 
     // Prefetch the dashboard page

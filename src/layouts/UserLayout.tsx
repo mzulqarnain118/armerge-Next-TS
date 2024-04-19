@@ -94,7 +94,7 @@ const handleURLChange = () => {
   return (
      <Box sx={{ width: '100%' , display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           {!isEmailVerified ? (
-            <Alert sx={{ borderRadius: 0, zIndex: 9999, position: 'sticky' }} severity="error" variant='filled'>
+            <Alert sx={{ borderRadius: 0, zIndex: 9999, position: 'sticky' }} severity="warning" variant='filled'>
               We need to verify your email address by clicking the link we sent.{' '}
               <span
                 onClick={() => sendVerificationEmail()}
@@ -117,7 +117,6 @@ const handleURLChange = () => {
             </Alert>
           ) : null}
 
-          <div className={!isEmailVerified && 'disabled'}>
           <VerticalLayout
             hidden={!navOpen && hidden}
             settings={settings}
@@ -135,7 +134,6 @@ const handleURLChange = () => {
             {children}
             {/* <UpgradeToProButton /> */}
           </VerticalLayout>
-          </div>
         </Box>
   )
 }

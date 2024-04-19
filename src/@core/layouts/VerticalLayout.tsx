@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 
 // ** MUI Imports
 import Fab from '@mui/material/Fab'
@@ -24,6 +24,7 @@ import ScrollToTop from 'src/@core/components/scroll-to-top'
 
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import { getLocal } from 'src/helpers';
 
 const VerticalLayoutWrapper = styled('div')({
   height: '100%',
@@ -63,12 +64,18 @@ const VerticalLayout = (props: LayoutProps) => {
 
   // ** Toggle Functions
   const toggleNavVisibility = () => setNavVisible(!navVisible)
+  const [isEmailVerified, setIsEmailVerified] = useState<Boolean>(false)
 
+
+  useEffect( () => {
+    setIsEmailVerified(getLocal('isEmailVerified'))
+  }, [])
   return (
     <>     
       <VerticalLayoutWrapper className='layout-wrapper'>
 
         {/* Navigation Menu */}
+         <div className={!isEmailVerified && 'disabled'}>
         <Box  >
           <Navigation
             navWidth={navWidth}
@@ -78,13 +85,18 @@ const VerticalLayout = (props: LayoutProps) => {
             {...props}
           />
         </Box>
+        </div>
+
+        {/* Content Wrapper */}
+
         <MainContentWrapper className='layout-content-wrapper'>
           {/* AppBar Component */}
           <AppBar toggleNavVisibility={toggleNavVisibility} {...props} />
 
           {/* Content */}
+          <div className={!isEmailVerified && 'disabled'}>
           <ContentWrapper
-            className='layout-page-content'
+            className={'layout-page-content'}
             sx={{
               ...(contentWidth === 'boxed' && {
                 mx: 'auto',
@@ -95,6 +107,7 @@ const VerticalLayout = (props: LayoutProps) => {
           >
             {children}
           </ContentWrapper>
+          </div>
 
           {/* Footer Component */}
           <Footer {...props} />

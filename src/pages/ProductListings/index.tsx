@@ -17,7 +17,7 @@ import Formheading from 'src/common/Formheading';
 import Toggle from 'src/common/Toggle';
 import { GridColDef } from '@mui/x-data-grid';
 import Toast from 'src/common/Toast/Toast';
-import { IconImg } from '../auth/register/[[...storeID]]';
+import { IconImg } from '../auth/register/[storeID]';
 import { AL, getLocal } from 'src/helpers';
 
 const ProductListings = () => {

@@ -40,7 +40,7 @@ import { setLocal } from 'src/helpers'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import { LeftContent, ResponsiveCardContent } from '../register/[[...storeID]]'
+import { LeftContent, ResponsiveCardContent } from '../register/[storeID]'
 
 interface State {
   password: string
@@ -75,12 +75,6 @@ const LoginPage = () => {
   const router = useRouter()
   const { storeID } = router.query
 
-  // useEffect(() => {
-  //   // Check if localStorage is available
-  //   if (typeof window !== 'undefined' && window.localStorage) {
-  //     localStorage.setItem('storeID', String(storeID))
-  //   }
-  // }, [storeID])
   // Set the rememberMe state to true if the rememberMe checkbox was previously checked
   useEffect(() => {
     const rememberMeValue = localStorage.getItem('rememberMe') === 'true'
@@ -91,6 +85,7 @@ const LoginPage = () => {
     setRememberMe(e.target.checked)
   }
 
+  console.log(process.env.LIVE)
   const handleGoogleSignIn = async() => {
     try {
     const response = await ApiCallGetSimple('user/login/google')
@@ -217,7 +212,7 @@ const LoginPage = () => {
               </Form>
             )}
           </Formik>
-          <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+          {/* <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
             <Typography variant='body2' sx={{ marginRight: 2 }}>
               Don’t have an Account?
             </Typography>
@@ -226,7 +221,7 @@ const LoginPage = () => {
                 <LinkStyled>Create an account</LinkStyled>
               </Link>
             </Typography>
-          </Box>
+          </Box> */}
           {/* <Divider sx={{ my: 5 }}>or</Divider> */}
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {/* <Link href='/' passHref>
